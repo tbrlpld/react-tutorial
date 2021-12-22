@@ -5,9 +5,9 @@ import './index.css';
 
 function Square(props) {
     return (
-      <button className="square">
-          { props.value }
-      </button>
+        <button className="square" onClick={() => {console.log('click')} }>
+            { props.value }
+        </button>
     );
 }
 
