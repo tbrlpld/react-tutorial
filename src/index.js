@@ -37,49 +37,19 @@ function computeWinner (squares) {
     return null
 }
 
-function Board() {
-    const [fields, setFields] = useState(Array(9).fill(null))
-    const [xIsNext, setXIsNext] = useState(true)
-
-    const winner = computeWinner(fields)
-
-    function getPlayerLabel() {
-        return xIsNext ? "X" : "O"
-    }
-
-    function getStatus() {
-        if (winner != null) {
-            return `Winner: ${ winner }`
-        }
-        return `Next player: ${ getPlayerLabel() }`
-    }
-
-    function handleSquareClick(i) {
-        // The slice is necessary because the array is mutable.
-        const newfields = fields.slice()
-
-        if (newfields[i] != null || winner != null) {
-            return;
-        }
-
-        newfields[i] = getPlayerLabel()
-        setFields(newfields)
-        setXIsNext(!xIsNext)
-    }
+function Board(props) {
 
     function renderSquare(i) {
         return (
             <Square
-                value={ fields[i] }
-                onClick={ () => handleSquareClick(i) }
+                value={ props.squares[i] }
+                onClick={ () => props.onSquareClick(i) }
             />
         )
     }
 
-
     return (
       <div>
-        <div className="status">{ getStatus() }</div>
         <div className="board-row">
           {renderSquare(0)}
           {renderSquare(1)}
@@ -100,13 +70,44 @@ function Board() {
 }
 
 function Game() {
+    const [history, setHistory] = useState([Array(9).fill(null)])
+    const current = history[history.length - 1]
+    console.log(current)
+    const [xIsNext, setXIsNext] = useState(true)
+    const winner = computeWinner(current)
+
+    function getPlayerLabel() {
+        return xIsNext ? "X" : "O"
+    }
+
+    function getStatus() {
+        if (winner != null) {
+            return `Winner: ${ winner }`
+        }
+        return `Next player: ${ getPlayerLabel() }`
+    }
+
+    function handleSquareClick(i) {
+        // The slice is necessary because the array is mutable.
+        const newSquares = current.slice()
+
+        if (newSquares[i] != null || winner != null) {
+            return;
+        }
+
+        newSquares[i] = getPlayerLabel()
+        const newHistory = [...history, newSquares]
+        setHistory(newHistory)
+        setXIsNext(!xIsNext)
+    }
+
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board squares={ current } onSquareClick={ handleSquareClick }/>
         </div>
         <div className="game-info">
-          <div>{/* status */}</div>
+          <div>{ getStatus() }</div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
