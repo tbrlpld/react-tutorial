@@ -22,6 +22,11 @@ function Board() {
     function handleSquareClick(i) {
         // The slice is necessary because the array is mutable.
         const newfields = fields.slice()
+
+        if (newfields[i] != null) {
+            return;
+        }
+
         newfields[i] = getPlayerLabel()
         setFields(newfields)
         setXIsNext(!xIsNext)
