@@ -4,15 +4,9 @@ import './index.css';
 
 
 function Square(props) {
-    const [value, setValue] = useState(props.value)
-
-    function handleClick () {
-        setValue("X")
-    }
-
     return (
-        <button className="square" onClick={ handleClick}>
-            { value }
+        <button className="square" onClick={ () => props.onClick() }>
+            { props.value }
         </button>
     );
 }
@@ -20,8 +14,20 @@ function Square(props) {
 function Board() {
     const [fields, setFields] = useState(Array(9).fill(null))
 
+    function handleSquareClick(i) {
+        // The slice is necessary because the array is mutable.
+        const newfields = fields.slice()
+        newfields[i] = 'X'
+        setFields(newfields)
+    }
+
     function renderSquare(i) {
-        return <Square value={fields[i]} />;
+        return (
+            <Square
+                value={ fields[i] }
+                onClick={ () => handleSquareClick(i) }
+            />
+        )
     }
 
     const status = 'Next player: X';
