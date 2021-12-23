@@ -13,12 +13,18 @@ function Square(props) {
 
 function Board() {
     const [fields, setFields] = useState(Array(9).fill(null))
+    const [xIsNext, setXIsNext] = useState(true)
+
+    function getPlayerLabel() {
+        return xIsNext ? "X" : "O"
+    }
 
     function handleSquareClick(i) {
         // The slice is necessary because the array is mutable.
         const newfields = fields.slice()
-        newfields[i] = 'X'
+        newfields[i] = getPlayerLabel()
         setFields(newfields)
+        setXIsNext(!xIsNext)
     }
 
     function renderSquare(i) {
@@ -30,7 +36,7 @@ function Board() {
         )
     }
 
-    const status = 'Next player: X';
+    const status = `Next player: ${ getPlayerLabel() }`
 
     return (
       <div>
