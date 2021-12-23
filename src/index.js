@@ -4,7 +4,7 @@ import './index.css';
 
 
 function Square(props) {
-    const [value, setValue] = useState(null)
+    const [value, setValue] = useState(props.value)
 
     function handleClick () {
         setValue("X")
@@ -18,8 +18,10 @@ function Square(props) {
 }
 
 function Board() {
+    const [fields, setFields] = useState(Array(9).fill(null))
+
     function renderSquare(i) {
-        return <Square value={i} />;
+        return <Square value={fields[i]} />;
     }
 
     const status = 'Next player: X';
