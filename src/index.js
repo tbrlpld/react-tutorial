@@ -71,10 +71,10 @@ function Board(props) {
 
 function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)])
-    const current = history[history.length - 1]
-    console.log(current)
     const [xIsNext, setXIsNext] = useState(true)
 
+    const current = history[history.length - 1]
+    console.log(current)
     const winner = computeWinner(current)
     const playerLabel = xIsNext ? "X" : "O"
     const status = winner ? `Winner: ${ winner }` : `Next player: ${ playerLabel }`
