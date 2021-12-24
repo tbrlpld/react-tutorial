@@ -72,6 +72,7 @@ function Board(props) {
 function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)])
     const [xIsNext, setXIsNext] = useState(true)
+    console.log(history)
 
     const current = history[history.length - 1]
     console.log(current)
@@ -93,6 +94,15 @@ function Game() {
         setXIsNext(!xIsNext)
     }
 
+    function handleTravelClick(historyIndex) {
+        const newHistory = history.slice(0, historyIndex + 1)
+        setHistory(newHistory)
+    }
+
+    const travelButtons = history.map((value, index) => {
+        return <li key={ value }><button onClick={ () => handleTravelClick(index) }>Go to #{ index }</button></li>
+    })
+
     return (
       <div className="game">
         <div className="game-board">
@@ -100,7 +110,7 @@ function Game() {
         </div>
         <div className="game-info">
           <div>{ status }</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{ travelButtons }</ol>
         </div>
       </div>
     );
