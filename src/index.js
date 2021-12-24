@@ -70,28 +70,34 @@ function Board(props) {
 }
 
 function Game() {
-    const [history, setHistory] = useState([Array(9).fill(null)])
-    const [xIsNext, setXIsNext] = useState(true)
-    console.log(history)
+    const [history, setHistory] = useState([{
+        squares: Array(9).fill(null),
+        xIsNext: true,
+    }])
 
     const current = history[history.length - 1]
     console.log(current)
-    const winner = computeWinner(current)
-    const playerLabel = xIsNext ? "X" : "O"
+    const winner = computeWinner(current.squares)
+    const playerLabel = current.xIsNext ? "X" : "O"
     const status = winner ? `Winner: ${ winner }` : `Next player: ${ playerLabel }`
 
     function handleSquareClick(i) {
         // The slice is necessary because the array is mutable.
-        const newSquares = current.slice()
+        const newSquares = current.squares.slice()
 
         if (newSquares[i] != null || winner != null) {
             return;
         }
 
         newSquares[i] = playerLabel
-        const newHistory = [...history, newSquares]
+        const newHistory = [
+            ...history,
+            {
+                squares: newSquares,
+                xIsNext: !current.xIsNext,
+            },
+        ]
         setHistory(newHistory)
-        setXIsNext(!xIsNext)
     }
 
     function handleTravelClick(historyIndex) {
@@ -100,13 +106,13 @@ function Game() {
     }
 
     const travelButtons = history.map((value, index) => {
-        return <li key={ value }><button onClick={ () => handleTravelClick(index) }>Go to #{ index }</button></li>
+        return <li key={ value.squares }><button onClick={ () => handleTravelClick(index) }>Go to #{ index }</button></li>
     })
 
     return (
       <div className="game">
         <div className="game-board">
-          <Board squares={ current } onSquareClick={ handleSquareClick }/>
+          <Board squares={ current.squares } onSquareClick={ handleSquareClick }/>
         </div>
         <div className="game-info">
           <div>{ status }</div>
