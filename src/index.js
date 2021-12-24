@@ -74,18 +74,10 @@ function Game() {
     const current = history[history.length - 1]
     console.log(current)
     const [xIsNext, setXIsNext] = useState(true)
+
     const winner = computeWinner(current)
-
-    function getPlayerLabel() {
-        return xIsNext ? "X" : "O"
-    }
-
-    function getStatus() {
-        if (winner != null) {
-            return `Winner: ${ winner }`
-        }
-        return `Next player: ${ getPlayerLabel() }`
-    }
+    const playerLabel = xIsNext ? "X" : "O"
+    const status = winner ? `Winner: ${ winner }` : `Next player: ${ playerLabel }`
 
     function handleSquareClick(i) {
         // The slice is necessary because the array is mutable.
@@ -95,7 +87,7 @@ function Game() {
             return;
         }
 
-        newSquares[i] = getPlayerLabel()
+        newSquares[i] = playerLabel
         const newHistory = [...history, newSquares]
         setHistory(newHistory)
         setXIsNext(!xIsNext)
@@ -107,7 +99,7 @@ function Game() {
           <Board squares={ current } onSquareClick={ handleSquareClick }/>
         </div>
         <div className="game-info">
-          <div>{ getStatus() }</div>
+          <div>{ status }</div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
