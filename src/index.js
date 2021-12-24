@@ -76,10 +76,17 @@ function Game() {
     }])
 
     const current = history[history.length - 1]
-    console.log(current)
     const winner = computeWinner(current.squares)
     const playerLabel = current.xIsNext ? "X" : "O"
-    const status = winner ? `Winner: ${ winner }` : `Next player: ${ playerLabel }`
+
+    let status = undefined
+    if (winner) {
+        status = `Winner: ${ winner }`
+    } else if (current.squares.indexOf(null) === -1) {
+        status = "Draw"
+    } else {
+        status = `Next player: ${ playerLabel }`
+    }
 
     function handleSquareClick(i) {
         // The slice is necessary because the array is mutable.
